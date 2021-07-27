@@ -1,22 +1,22 @@
-import React, {useEffect} from 'react';
-
+import React from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import Markers from 'react-leaflet-enhanced-marker';
 import 'leaflet/dist/leaflet.css';
 
-const CityMap = ({ locations, cityName }) => {  
-    console.log("cityName", cityName)  
-
+const CityMap = ({ locations, cityName }) => {
+    
+    // to get the center position 
     const getLatLng = () => {
         return cityName === "belmont" ? [42.4464, -71.4594] : [33.8796, -84.5023];
-    };    
+    };
 
+    // to change the map view based on the selection of location
     function ChangeMap({ center, zoom }) {
         const map = useMap();
         map.setView(center, zoom);
         return null;
-      }
-    
+    }
+
     return (
         <>
             <div style={{ width: "100%", float: "left" }}>
@@ -26,7 +26,7 @@ const CityMap = ({ locations, cityName }) => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     <ChangeMap center={getLatLng()} zoom={10} />
-                    {locations && locations.places && locations.places.map((place, index) => {                        
+                    {locations && locations.places && locations.places.map((place, index) => {
                         return <Markers
                             key={index}
                             position={[`${place.latitude}`, `${place.longitude}`]}

@@ -11,71 +11,65 @@ import smrynaImg from './images/smryna.jpg';
 import bellmontImg from './images/bellmont.jpg';
 
 export default function App() {
-
   const belmontCities = useSelector(state => state.citiesReducer.belmontCitydetails);
   const smyrnaCities = useSelector(state => state.citiesReducer.smyrnaCitydetails);
   const dispatch = useDispatch();
   const [location, setLocation] = useState("smryna");
 
-  useEffect(() => {
+  useEffect(() => {    
     const getBelmontCityDetails = async () => {
       await axios
         .get('https://api.zippopotam.us/us/MA/Belmont')
         .then(response => {
-          console.log(response.data);
           dispatch(getBelmontCitydetails(response.data));
         })
         .catch(error => {
           console.log(error);
         });
     };
+    // belmont city api call
     getBelmontCityDetails();
     const getSmyrnaCityDetails = async () => {
       await axios
         .get('https://api.zippopotam.us/us/GA/Smyrna')
         .then(response => {
-          console.log(response.data);
           dispatch(getSmyrnaCitydetails(response.data));
         })
         .catch(error => {
           console.log(error);
         });
     };
+    // smyrna city api call
     getSmyrnaCityDetails();
   }, []);
 
   return (
-    <div style={{
-      backgroundColor: "#D84041",
-      width: "100%",
-      float: "left",
-    }}>
-      <div style={{ width: "25%", float: "left" }}>
-        <div style={{ width: "100%", float: "left", cursor: "pointer" }} onClick={() => setLocation("smryna")}>
-          <div className={location === "belmont" ? "opacity" : "no-opacity"} style={{ color: "#FFF", fontSize: "18px", textAlign: "center", paddingTop: "30px" }}>
+    <div className="body-bg">
+      <div className="width-25">
+        <div className="width-100 cursor" onClick={() => setLocation("smryna")}>
+          <div className={location === "belmont" ? "opacity smryna-label" : "no-opacity smryna-label"}>
             Smyrna GA
           </div>
-          <div style={{ textAlign: "center", paddingTop: "60px", paddingBottom: "40px" }}>
+          <div className="smryna-img">
             <img src={smrynaImg} width="280px" height="100%" />
           </div>
         </div>
         <hr />
-        <div className={location === "belmont" ? "no-opacity" : "opacity"} style={{ width: "100%", float: "left", cursor: "pointer" }} onClick={() => setLocation("belmont")}>
-          <div style={{ width: "100%", float: "left", color: "#FFF", fontSize: "18px", textAlign: "center", paddingTop: "30px" }}>
+        <div className={location === "belmont" ? "no-opacity width-100 cursor" : "opacity width-100 cursor"} onClick={() => setLocation("belmont")}>
+          <div className="belmont-label">
             Belmont MA
           </div>
-          <div style={{ width: "100%", float: "left", textAlign: "center", paddingTop: "60px" }}>
+          <div className="belmont-img">
             <img src={bellmontImg} width="280px" height="100%" />
           </div>
         </div>
       </div>
-      <div style={{ width: "75%", float: "left" }}>
+      <div className="width-75">
         {location &&
           <CityMap
             locations={location === "belmont" ? belmontCities : smyrnaCities}
             cityName={location} />
         }
-
       </div>
     </div>
   );
